@@ -11,41 +11,41 @@
  *
  */
 
-import { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from 'utils/@reduxjs/toolkit';
-import { ContainerState, RepoErrorType } from './types';
-import { Repo } from 'types/Repo';
+import { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from 'utils/@reduxjs/toolkit'
+import { ContainerState, RepoErrorType } from './types'
+import { Repo } from 'types/Repo'
 
 // The initial state of the GithubRepoForm container
 export const initialState: ContainerState = {
-  username: 'react-boilerplate',
-  repositories: [],
-  loading: false,
-  error: null,
-};
+    username: 'react-boilerplate',
+    repositories: [],
+    loading: false,
+    error: null,
+}
 
 const githubRepoFormSlice = createSlice({
-  name: 'githubRepoForm',
-  initialState,
-  reducers: {
-    changeUsername(state, action: PayloadAction<string>) {
-      state.username = action.payload;
+    name: 'githubRepoForm',
+    initialState,
+    reducers: {
+        changeUsername(state, action: PayloadAction<string>) {
+            state.username = action.payload
+        },
+        loadRepos(state) {
+            state.loading = true
+            state.error = null
+            state.repositories = []
+        },
+        reposLoaded(state, action: PayloadAction<Repo[]>) {
+            const repos = action.payload
+            state.repositories = repos
+            state.loading = false
+        },
+        repoError(state, action: PayloadAction<RepoErrorType>) {
+            state.error = action.payload
+            state.loading = false
+        },
     },
-    loadRepos(state) {
-      state.loading = true;
-      state.error = null;
-      state.repositories = [];
-    },
-    reposLoaded(state, action: PayloadAction<Repo[]>) {
-      const repos = action.payload;
-      state.repositories = repos;
-      state.loading = false;
-    },
-    repoError(state, action: PayloadAction<RepoErrorType>) {
-      state.error = action.payload;
-      state.loading = false;
-    },
-  },
-});
+})
 
-export const { actions, reducer, name: sliceKey } = githubRepoFormSlice;
+export const { actions, reducer, name: sliceKey } = githubRepoFormSlice

@@ -22,12 +22,12 @@ exports[`<Features /> should render with de translations 1`] = `
     <strong>
       highly performant
     </strong>
-     React.js applications with a focus on
-     
+     React.js applications with a focus on 
     <strong>
       best DX
     </strong>
-     and 
+     and
+     
     <strong>
       best practices
     </strong>
@@ -229,12 +229,12 @@ exports[`<Features /> should render with en translations 1`] = `
     <strong>
       highly performant
     </strong>
-     React.js applications with a focus on
-     
+     React.js applications with a focus on 
     <strong>
       best DX
     </strong>
-     and 
+     and
+     
     <strong>
       best practices
     </strong>

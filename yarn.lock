@@ -11059,6 +11059,11 @@ react-test-renderer@16.13.1:
     react-is "^16.8.6"
     scheduler "^0.19.1"
 
+react-typewriting-effect@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-typewriting-effect/-/react-typewriting-effect-1.0.4.tgz#650bd4925a3ace2688a768dc8982aaa9eabad201"
+  integrity sha512-IC4ppqY2AJhMvkNagbha7kPVWDjwdqxY4u8Ho7+GGIAtATga49fEJ3UCg5ZxjBaFmifIhLQtORvhPcNcShlsAw==
+
 react@16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"

@@ -4,12 +4,21 @@ import { Logos } from './Logos'
 import { Title } from 'app/containers/HomePage/components/Title'
 import { Lead } from 'app/containers/HomePage/components/Lead'
 import { A } from 'app/components/A'
+import { Terminal, LineType } from 'app/containers/Terminal'
 
 export function Masthead() {
     return (
         <Wrapper>
             <Logos />
             <Title>React Boilerplate meets CRA</Title>
+            <Terminal
+                lines={[
+                    ['line1', LineType.INPUT],
+                    ['line2', LineType.INPUT],
+                    ['lololol', LineType.OUTPUT],
+                    ['line3', LineType.INPUT],
+                ]}
+            ></Terminal>
             <Lead>
                 Now you can use the{' '}
                 <A

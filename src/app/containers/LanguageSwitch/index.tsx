@@ -16,7 +16,6 @@ export function LanguageSwitch() {
 
     return (
         <Wrapper>
-            <FormLabel>{t(...messages.selectLanguage)}</FormLabel>
             <Languages>
                 <Radio
                     id="en"
@@ -51,7 +50,7 @@ const Wrapper = styled.div`
 const Languages = styled.div`
     display: flex;
 
-    .radio {
+    .radio:not(:last-child) {
         margin-right: 1.5rem;
     }
 `

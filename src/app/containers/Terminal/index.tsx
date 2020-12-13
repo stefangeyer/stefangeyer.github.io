@@ -3,25 +3,20 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { Static } from './Static'
 import { Input } from './Input'
-
-export enum LineType {
-    INPUT,
-    OUTPUT,
-}
+import { LineType } from './types'
 
 type TerminalProps = {
-    lines: [content: string, type: LineType][]
+    lines: [content: any, type: LineType][]
 }
 
 export function Terminal(props: TerminalProps) {
-    const [lines, setLines] = useState<[content: string, type: LineType][]>([
+    const [lines, setLines] = useState<[content: any, type: LineType][]>([
         [...props.lines[0]],
     ])
 
     async function lineCompleted() {
         if (lines.length < props.lines.length) {
             const next = props.lines[lines.length]
-            // const delay = next[1] === LineType.INPUT ? 500 : 200
             const delay = 200
             await new Promise(res => setTimeout(res, delay))
             const newLines = [...lines]
@@ -43,7 +38,7 @@ export function Terminal(props: TerminalProps) {
                 {lines.map((line, i) =>
                     line[1] === LineType.INPUT ? (
                         <Input
-                            key={`${line[0]}${line[1]}${i}`}
+                            key={`${line[0]}-${i}`}
                             content={line[0]}
                             lineCompleted={lineCompleted}
                             static={
@@ -52,7 +47,7 @@ export function Terminal(props: TerminalProps) {
                         ></Input>
                     ) : (
                         <Static
-                            key={`${line[0]}${line[1]}${i}`}
+                            key={`${line[0]}-${i}`}
                             content={line[0]}
                             lineCompleted={lineCompleted}
                         ></Static>
@@ -66,10 +61,9 @@ export function Terminal(props: TerminalProps) {
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 500px;
-    height: 300px;
-    background-color: black;
-    border: 1px solid orange;
+    //width: 800px;
+    height: 500px;
+    background-color: rgb(40, 44, 52);
     border-radius: 5px;
     font-family: Consolas, monaco, monospace;
     font-size: 14px;

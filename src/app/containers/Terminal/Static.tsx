@@ -2,18 +2,22 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 type StaticProps = {
-    content: string
+    content: any
     lineCompleted?: () => void
 }
 
-export function Static(props: StaticProps) {
-    if (props.lineCompleted) props.lineCompleted()
+export class Static extends React.Component<StaticProps> {
+    componentDidMount() {
+        if (this.props.lineCompleted) this.props.lineCompleted()
+    }
 
-    return (
-        <LineStyle>
-            <Text>{props.content}</Text>
-        </LineStyle>
-    )
+    render() {
+        return (
+            <LineStyle>
+                <Text>{this.props.content}</Text>
+            </LineStyle>
+        )
+    }
 }
 
 const LineStyle = styled.p`

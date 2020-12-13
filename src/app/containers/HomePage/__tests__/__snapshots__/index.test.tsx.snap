@@ -7,7 +7,7 @@ exports[`<HomePage /> should render and match the snapshot 1`] = `
     encodeSpecialCharacters={true}
   >
     <title>
-      Home Page
+      Stefan Geyer
     </title>
     <meta
       content="A React Boilerplate application homepage"

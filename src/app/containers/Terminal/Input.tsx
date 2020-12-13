@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Typewriter } from 'react-typewriting-effect'
 
 type InputProps = {
-    content: string
+    content: any
     static?: any
     lineCompleted?: () => void
 }

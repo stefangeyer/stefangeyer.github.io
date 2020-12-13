@@ -2,6 +2,36 @@
 
 exports[`<Features /> should render with de translations 1`] = `
 <React.Fragment>
+  <Terminal
+    lines={
+      Array [
+        Array [
+          "ls",
+          0,
+        ],
+        Array [
+          <span>
+            <Features__Executable>
+              fetch_projects
+            </Features__Executable>
+          </span>,
+          1,
+        ],
+        Array [
+          "./fetch_projects",
+          0,
+        ],
+        Array [
+          "lololol",
+          1,
+        ],
+        Array [
+          "line3",
+          0,
+        ],
+      ]
+    }
+  />
   <Title
     as="h2"
   >
@@ -209,6 +239,36 @@ exports[`<Features /> should render with de translations 1`] = `
 
 exports[`<Features /> should render with en translations 1`] = `
 <React.Fragment>
+  <Terminal
+    lines={
+      Array [
+        Array [
+          "ls",
+          0,
+        ],
+        Array [
+          <span>
+            <Features__Executable>
+              fetch_projects
+            </Features__Executable>
+          </span>,
+          1,
+        ],
+        Array [
+          "./fetch_projects",
+          0,
+        ],
+        Array [
+          "lololol",
+          1,
+        ],
+        Array [
+          "line3",
+          0,
+        ],
+      ]
+    }
+  />
   <Title
     as="h2"
   >

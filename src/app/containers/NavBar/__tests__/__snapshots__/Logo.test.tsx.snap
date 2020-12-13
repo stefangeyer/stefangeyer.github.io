@@ -18,23 +18,13 @@ exports[`<Logo /> should match snapshot 1`] = `
   margin-right: 1rem;
 }
 
-.c2 {
-  font-size: 0.875rem;
-  font-weight: normal;
-}
-
 <div
   class="c0"
 >
   <div
     class="c1"
   >
-    React Boilerplate
-  </div>
-  <div
-    class="c2"
-  >
-    Create React App Template
+    Stefan Geyer
   </div>
 </div>
 `;

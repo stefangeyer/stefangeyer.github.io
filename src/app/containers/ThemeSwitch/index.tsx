@@ -19,11 +19,10 @@ export function ThemeSwitch() {
 
     return (
         <Wrapper>
-            <FormLabel>Select Theme</FormLabel>
             <Themes>
                 <Radio
                     id="system"
-                    label="System theme"
+                    label="System"
                     className="radio"
                     name="theme"
                     onChange={handleThemeChange}
@@ -63,7 +62,7 @@ const Wrapper = styled.div`
 const Themes = styled.div`
     display: flex;
 
-    .radio {
+    .radio:not(:last-child) {
         margin-right: 1.5rem;
     }
 `

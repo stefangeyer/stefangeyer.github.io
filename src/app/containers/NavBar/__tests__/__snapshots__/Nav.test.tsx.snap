@@ -43,7 +43,7 @@ exports[`<Nav /> should match the snapshot 1`] = `
 >
   <a
     class="c1"
-    href="https://cansahin.gitbook.io/react-boilerplate-cra-template/"
+    href="/Resume_Geyer.pdf"
     rel="noopener noreferrer"
     target="_blank"
     title="Documentation Page"
@@ -51,11 +51,11 @@ exports[`<Nav /> should match the snapshot 1`] = `
     <svg>
       documentation-icon.svg
     </svg>
-    Documentation
+    Resume
   </a>
   <a
     class="c1"
-    href="https://github.com/react-boilerplate/react-boilerplate-cra-template"
+    href="https://github.com/stefangeyer"
     rel="noopener noreferrer"
     target="_blank"
     title="Github Page"

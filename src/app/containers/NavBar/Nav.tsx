@@ -1,28 +1,38 @@
 import * as React from 'react'
 import styled from 'styled-components/macro'
-import { ReactComponent as DocumentationIcon } from './assets/documentation-icon.svg'
+import { ReactComponent as ResumeIcon } from './assets/resume-icon.svg'
 import { ReactComponent as GithubIcon } from './assets/github-icon.svg'
+import { ReactComponent as LinkedinIcon } from './assets/linkedin-icon.svg'
 
 export function Nav() {
     return (
         <Wrapper>
             <Item
-                href="https://cansahin.gitbook.io/react-boilerplate-cra-template/"
+                href={process.env.PUBLIC_URL + '/Resume_Geyer.pdf'}
                 target="_blank"
-                title="Documentation Page"
+                title="Resume"
                 rel="noopener noreferrer"
             >
-                <DocumentationIcon />
-                Documentation
+                <ResumeIcon />
+                Resume
             </Item>
             <Item
-                href="https://github.com/react-boilerplate/react-boilerplate-cra-template"
+                href="https://www.linkedin.com/in/stefan-geyer/"
                 target="_blank"
-                title="Github Page"
+                title="LinkedIn"
+                rel="noopener noreferrer"
+            >
+                <LinkedinIcon />
+                LinkedIn
+            </Item>
+            <Item
+                href="https://github.com/stefangeyer"
+                target="_blank"
+                title="GitHub"
                 rel="noopener noreferrer"
             >
                 <GithubIcon />
-                Github
+                GitHub
             </Item>
         </Wrapper>
     )

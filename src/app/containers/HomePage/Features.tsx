@@ -3,14 +3,12 @@ import styled from 'styled-components/macro'
 import { Terminal } from 'app/containers/Terminal'
 import { LineType } from 'app/containers/Terminal/types'
 import { ThemeSwitch } from 'app/containers/ThemeSwitch'
-import { LanguageSwitch } from '../LanguageSwitch'
 
 export function Features() {
     return (
         <Wrapper>
             <Controls>
                 <ThemeSwitch />
-                <LanguageSwitch />
             </Controls>
             <Terminal
                 lines={[
@@ -49,7 +47,7 @@ const Wrapper = styled.main`
 
 const Controls = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     margin-top: 3em;
     margin-bottom: 1em;
 `

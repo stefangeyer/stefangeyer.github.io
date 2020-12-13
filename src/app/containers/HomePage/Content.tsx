@@ -4,12 +4,9 @@ import { Terminal } from 'app/containers/Terminal'
 import { LineType } from 'app/containers/Terminal/types'
 import { ThemeSwitch } from 'app/containers/ThemeSwitch'
 
-export function Features() {
+export function Content() {
     return (
         <Wrapper>
-            <Controls>
-                <ThemeSwitch />
-            </Controls>
             <Terminal
                 lines={[
                     ['ls', LineType.INPUT],
@@ -34,6 +31,9 @@ export function Features() {
                     ['TODO', LineType.OUTPUT],
                 ]}
             ></Terminal>
+            <Controls>
+                <ThemeSwitch />
+            </Controls>
         </Wrapper>
     )
 }
@@ -43,13 +43,14 @@ const Wrapper = styled.main`
     flex-direction: column;
     //align-items: center;
     //justify-content: center;
+    margin-top: 3em;
+    margin-bottom: 1em;
 `
 
 const Controls = styled.div`
     display: flex;
-    justify-content: start;
-    margin-top: 3em;
-    margin-bottom: 1em;
+    justify-content: center;
+    margin-top: 1em;
 `
 
 const Executable = styled.span`

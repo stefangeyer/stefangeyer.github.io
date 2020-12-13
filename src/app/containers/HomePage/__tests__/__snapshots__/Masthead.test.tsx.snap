@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<Masthead /> should render and match the snapshot 1`] = `
-<Masthead__Wrapper>
-  <Title>
-    React Boilerplate meets CRA
-  </Title>
-</Masthead__Wrapper>
-`;

@@ -4,7 +4,7 @@ import { ReactComponent as ResumeIcon } from './assets/resume-icon.svg'
 import { ReactComponent as GithubIcon } from './assets/github-icon.svg'
 import { ReactComponent as LinkedinIcon } from './assets/linkedin-icon.svg'
 
-export function Nav() {
+export function Links() {
     return (
         <Wrapper>
             <Item
@@ -14,7 +14,7 @@ export function Nav() {
                 rel="noopener noreferrer"
             >
                 <ResumeIcon />
-                Resume
+                <ItemTitle>Resume</ItemTitle>
             </Item>
             <Item
                 href="https://www.linkedin.com/in/stefan-geyer/"
@@ -23,7 +23,7 @@ export function Nav() {
                 rel="noopener noreferrer"
             >
                 <LinkedinIcon />
-                LinkedIn
+                <ItemTitle>LinkedIn</ItemTitle>
             </Item>
             <Item
                 href="https://github.com/stefangeyer"
@@ -32,15 +32,15 @@ export function Nav() {
                 rel="noopener noreferrer"
             >
                 <GithubIcon />
-                GitHub
+                <ItemTitle>GitHub</ItemTitle>
             </Item>
         </Wrapper>
     )
 }
 
-const Wrapper = styled.nav`
+const Wrapper = styled.div`
     display: flex;
-    margin-right: -1rem;
+    justify-content: center;
 `
 
 const Item = styled.a`
@@ -65,3 +65,5 @@ const Item = styled.a`
         margin-right: 0.25rem;
     }
 `
+
+const ItemTitle = styled.span``

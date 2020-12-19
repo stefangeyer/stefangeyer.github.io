@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Helmet } from 'react-helmet-async'
-import { NavBar } from '../NavBar'
+import { Footer } from '../Footer'
 import { Content } from './Content'
 import { PageWrapper } from 'app/components/PageWrapper'
 
@@ -14,9 +14,9 @@ export function HomePage() {
                     content="The one and only Stefan Geyer website"
                 />
             </Helmet>
-            <NavBar />
             <PageWrapper>
                 <Content />
+                <Footer />
             </PageWrapper>
         </>
     )

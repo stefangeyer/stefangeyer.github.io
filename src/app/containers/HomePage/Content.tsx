@@ -2,7 +2,6 @@ import * as React from 'react'
 import styled from 'styled-components/macro'
 import { Terminal } from 'app/containers/Terminal'
 import { LineType } from 'app/containers/Terminal/types'
-import { ThemeSwitch } from 'app/containers/ThemeSwitch'
 
 export function Content() {
     return (
@@ -31,9 +30,6 @@ export function Content() {
                     ['TODO', LineType.OUTPUT],
                 ]}
             ></Terminal>
-            <Controls>
-                <ThemeSwitch />
-            </Controls>
         </Wrapper>
     )
 }
@@ -41,16 +37,8 @@ export function Content() {
 const Wrapper = styled.main`
     display: flex;
     flex-direction: column;
-    //align-items: center;
-    //justify-content: center;
     margin-top: 3em;
     margin-bottom: 1em;
-`
-
-const Controls = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 1em;
 `
 
 const Executable = styled.span`

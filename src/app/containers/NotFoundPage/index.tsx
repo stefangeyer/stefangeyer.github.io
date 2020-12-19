@@ -2,9 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components/macro'
 import { P } from './P'
 import { Link } from 'app/components/Link'
-import { NavBar } from 'app/containers/NavBar'
 import { Helmet } from 'react-helmet-async'
-import { StyleConstants } from 'styles/StyleConstants'
 
 export function NotFoundPage() {
     return (
@@ -13,7 +11,6 @@ export function NotFoundPage() {
                 <title>404 Page Not Found</title>
                 <meta name="description" content="Page not found" />
             </Helmet>
-            <NavBar />
             <Wrapper>
                 <Title>
                     4
@@ -32,7 +29,7 @@ export function NotFoundPage() {
 }
 
 const Wrapper = styled.div`
-    height: calc(100vh - ${StyleConstants.NAV_BAR_HEIGHT});
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;

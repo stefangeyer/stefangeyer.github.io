@@ -1,23 +1,21 @@
 import * as React from 'react'
 import styled from 'styled-components/macro'
-import { Logo } from './Logo'
 import { StyleConstants } from 'styles/StyleConstants'
-import { Nav } from './Nav'
+import { Links } from './Links'
 import { PageWrapper } from '../../components/PageWrapper'
 
-export function NavBar() {
+export function Footer() {
     return (
         <Wrapper>
             <PageWrapper>
-                <Logo />
-                <Nav />
+                <Links />
             </PageWrapper>
         </Wrapper>
     )
 }
 
-const Wrapper = styled.header`
-    height: ${StyleConstants.NAV_BAR_HEIGHT};
+const Wrapper = styled.footer`
+    height: ${StyleConstants.FOOTER_HEIGHT};
     display: flex;
     width: 100%;
 

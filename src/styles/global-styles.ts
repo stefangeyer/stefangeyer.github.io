@@ -11,7 +11,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    padding-top: ${StyleConstants.NAV_BAR_HEIGHT};
+    padding-top: ${StyleConstants.FOOTER_HEIGHT};
     background-color: ${p => p.theme.background};
   }
 

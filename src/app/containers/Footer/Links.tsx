@@ -61,8 +61,15 @@ const Item = styled.a`
         opacity: 0.4;
     }
 
-    .icon {
-        margin-right: 0.25rem;
+    @media (min-width: 576px) {
+        .icon {
+            margin-right: 0.25rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        display: flex;
+        flex-direction: column;
     }
 `
 

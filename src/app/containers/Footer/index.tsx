@@ -1,6 +1,5 @@
 import * as React from 'react'
 import styled from 'styled-components/macro'
-import { StyleConstants } from 'styles/StyleConstants'
 import { Links } from './Links'
 import { PageWrapper } from '../../components/PageWrapper'
 
@@ -15,7 +14,7 @@ export function Footer() {
 }
 
 const Wrapper = styled.footer`
-    height: ${StyleConstants.FOOTER_HEIGHT};
+    margin: 1rem 0 1rem 0;
     display: flex;
     width: 100%;
 

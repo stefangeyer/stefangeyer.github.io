@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import { Typewriter } from 'react-typewriting-effect'
 
 type InputProps = {
-    content: any
+    content?: any
     static?: any
-    lineCompleted?: () => void
+    lineCompleted?: (content: string) => void
 }
 
 export function Input(props: InputProps) {
-    const lineCompleted = () => {
-        if (props.lineCompleted) props.lineCompleted()
+    const lineCompleted = (content: string) => {
+        if (props.lineCompleted) props.lineCompleted(content)
     }
 
     return (
@@ -21,14 +21,37 @@ export function Input(props: InputProps) {
                 <span>$</span>{' '}
             </Prompt>
             <Text>
-                <Typewriter
-                    string={props.content}
-                    onComplete={lineCompleted}
-                    cursor="█"
-                    stopBlinkinOnComplete={props.static}
-                ></Typewriter>
+                {props.content ? (
+                    <Typewriter
+                        string={props.content}
+                        onComplete={() => lineCompleted(props.content)}
+                        cursor="█"
+                        stopBlinkinOnComplete={props.static}
+                    ></Typewriter>
+                ) : (
+                    <Interactive
+                        onChange={(content: string) => {}}
+                    ></Interactive>
+                )}
             </Text>
         </LineStyle>
+    )
+}
+
+type InteractiveProps = {
+    onChange: (content: string) => void
+}
+
+function Interactive(props: InteractiveProps) {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        props.onChange(event.target.value)
+    }
+
+    return (
+        <InteractiveInput
+            spellCheck={false}
+            onChange={handleChange}
+        ></InteractiveInput>
     )
 }
 
@@ -52,5 +75,13 @@ const Prompt = styled.span`
 `
 const Text = styled.span`
     margin: 0;
+    color: white;
+`
+
+const InteractiveInput = styled.input`
+    background: transparent;
+    border: none;
+    outline: none;
+    caret-color: white;
     color: white;
 `

@@ -53,6 +53,7 @@ export function Terminal(props: TerminalProps) {
                         ></Static>
                     ),
                 )}
+                <Input lineCompleted={lineCompleted}></Input>
             </Body>
         </Wrapper>
     )

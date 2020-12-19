@@ -1,6 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { Typewriter } from 'react-typewriting-effect'
+import { Interactive } from './Interactive'
+import { Text } from '../../../components/Terminal'
 
 type InputProps = {
     content?: any
@@ -29,29 +31,10 @@ export function Input(props: InputProps) {
                         stopBlinkinOnComplete={props.static}
                     ></Typewriter>
                 ) : (
-                    <Interactive
-                        onChange={(content: string) => {}}
-                    ></Interactive>
+                    <Interactive onComplete={lineCompleted}></Interactive>
                 )}
             </Text>
         </LineStyle>
-    )
-}
-
-type InteractiveProps = {
-    onChange: (content: string) => void
-}
-
-function Interactive(props: InteractiveProps) {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.onChange(event.target.value)
-    }
-
-    return (
-        <InteractiveInput
-            spellCheck={false}
-            onChange={handleChange}
-        ></InteractiveInput>
     )
 }
 
@@ -72,16 +55,4 @@ const Prompt = styled.span`
     span:nth-child(2) {
         color: #00a4f1;
     }
-`
-const Text = styled.span`
-    margin: 0;
-    color: white;
-`
-
-const InteractiveInput = styled.input`
-    background: transparent;
-    border: none;
-    outline: none;
-    caret-color: white;
-    color: white;
 `

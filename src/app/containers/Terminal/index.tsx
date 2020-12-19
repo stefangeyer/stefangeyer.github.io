@@ -1,8 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { useState } from 'react'
-import { Static } from './Static'
-import { Input } from './Input'
+import { Static } from './components/Static'
+import { Input } from './components/Input'
 import { LineType } from './types'
 
 type TerminalProps = {

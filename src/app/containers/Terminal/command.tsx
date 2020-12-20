@@ -17,7 +17,9 @@ export abstract class CommandProcessor {
 
 export class StaticCommandProcessor extends CommandProcessor {
     onCommand(label: string, args: string[]): ParseResult {
-        if (label === 'ls') {
+        if (label.startsWith('./')) {
+            return './ not implemented yet :('
+        } else if (label === 'ls') {
             return (
                 <span>
                     <Default>education.txt</Default>{' '}

@@ -28,7 +28,8 @@ export class CommandHistory {
 
 export abstract class CommandProcessor {
     process(command: string): Promise<ParseResult> {
-        const args = command.split(' ')
+        const preprocessed = command.trim().replace(/\s+/g, ' ')
+        const args = preprocessed.split(' ')
         if (args.length === 0) return new Promise(res => res(true))
         const label = args.shift() as string
         return new Promise(res => res(this.onCommand(label, args)))

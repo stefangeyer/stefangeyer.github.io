@@ -113,7 +113,7 @@ const Header = styled.div`
 const Body = styled.div`
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto;
 `
 const IconGroup = styled.div`
     display: flex;

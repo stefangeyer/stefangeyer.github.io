@@ -1,60 +1,36 @@
 import * as React from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors'
 import { Static } from './components/Static'
 import { Input } from './components/Input'
-import { CommandHistory, CommandProcessor } from './command'
-import { Line, LineType, Plottable } from './types'
+import { InputLine, Line, OutputLine } from './types'
+import { sliceKey, reducer, actions } from './slice'
+import { terminalSaga } from './saga'
+import { selectHistory, selectShowInteractive } from './selectors'
 
-type TerminalProps = {
-    staticInput: string[]
-    processor: CommandProcessor
-    history: CommandHistory
-}
+type TerminalProps = {}
 
 export function Terminal(props: TerminalProps) {
-    const [staticCursor, setStaticCursor] = useState<number>(1)
+    useInjectReducer({ key: sliceKey, reducer: reducer })
+    useInjectSaga({ key: sliceKey, saga: terminalSaga })
 
-    const [lines, setLines] = useState<Line[]>([
-        [props.staticInput[0], LineType.INPUT],
-    ])
+    const history = useSelector(selectHistory)
+    const showInteractive = useSelector(selectShowInteractive)
+    const dispatch = useDispatch()
 
-    function addLine(line: Plottable, type: LineType) {
-        setLines([...lines, [line, type]])
+    // This hook runs only on mount and is used to ensure the initial command is dispatched
+    useEffect(() => {
+        dispatch(actions.nextCommand())
+    }, [dispatch])
+
+    function processInput(input: string) {
+        dispatch(actions.processCommand(input))
     }
 
-    function addInput(line: Plottable) {
-        addLine(line, LineType.INPUT)
-    }
-
-    function addOutput(line: Plottable) {
-        addLine(line, LineType.OUTPUT)
-    }
-
-    function humanInputCompleted(input: string) {
-        addInput(input)
-        inputCompleted(input)
-    }
-
-    async function inputCompleted(input: string) {
-        const result = await props.processor.process(input)
-        if (result === true) {
-            addOutput('')
-        } else if (result === false) {
-            addOutput(input.split(' ').shift() + ': command not found')
-        } else {
-            addOutput(result)
-        }
-    }
-
-    async function outputCompleted() {
-        if (staticCursor < props.staticInput.length) {
-            const next = props.staticInput[staticCursor]
-            const delay = 200
-            await new Promise(res => setTimeout(res, delay))
-            addInput(next)
-            setStaticCursor(staticCursor + 1)
-        }
+    function readyForNextLine() {
+        dispatch(actions.nextCommand())
     }
 
     return (
@@ -67,23 +43,28 @@ export function Terminal(props: TerminalProps) {
                 </IconGroup>
             </Header>
             <Body>
-                {lines.map((line, i) =>
-                    line[1] === LineType.INPUT ? (
-                        <Input
-                            key={`${line[0]}-${i}`}
-                            content={line[0]}
-                            lineCompleted={inputCompleted}
-                        ></Input>
-                    ) : (
-                        <Static
-                            key={`${line[0]}-${i}`}
-                            content={line[0]}
-                            lineCompleted={outputCompleted}
-                        ></Static>
-                    ),
-                )}
-                {lines[lines.length - 1][1] === LineType.OUTPUT ? (
-                    <Input lineCompleted={humanInputCompleted}></Input>
+                {history.map((line: Line, i) => {
+                    if (line instanceof InputLine) {
+                        return (
+                            <Input
+                                key={`${line.content}-${i}`}
+                                content={line.content}
+                                lineCompleted={processInput}
+                            ></Input>
+                        )
+                    } else if (line instanceof OutputLine) {
+                        return (
+                            <Static
+                                key={`${line.content}-${i}`}
+                                content={line.content}
+                                lineCompleted={readyForNextLine}
+                            ></Static>
+                        )
+                    }
+                    return ''
+                })}
+                {showInteractive ? (
+                    <Input lineCompleted={processInput}></Input>
                 ) : (
                     ''
                 )}

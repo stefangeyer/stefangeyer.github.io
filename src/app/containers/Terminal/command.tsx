@@ -8,7 +8,7 @@ export abstract class CommandProcessor {
     process(command: string): ParseResult {
         const preprocessed = command.trim().replace(/\s+/g, ' ')
         const args = preprocessed.split(' ')
-        if (args.length === 0) return true
+        if (args.length === 0 || args[0].length === 0) return true
         const label = args.shift() as string
         return this.onCommand(label, args)
     }

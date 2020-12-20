@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors'
 import { Static } from './components/Static'
 import { Input } from './components/Input'
-import { InputLine, Line, OutputLine } from './types'
+import { InputLine, InteractiveLine, Line, OutputLine } from './types'
 import { sliceKey, reducer, actions } from './slice'
 import { terminalSaga } from './saga'
 import { selectHistory, selectShowInteractive } from './selectors'
@@ -24,7 +24,12 @@ export function Terminal(props: TerminalProps) {
     // This hook runs only on mount and is used to ensure the initial command is dispatched
     useEffect(() => {
         dispatch(actions.nextCommand())
-    }, [dispatch])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    function processUserInput(input: string) {
+        dispatch(actions.copyUserInput(input))
+    }
 
     function processInput(input: string) {
         dispatch(actions.processCommand(input))
@@ -61,13 +66,22 @@ export function Terminal(props: TerminalProps) {
                                 lineCompleted={readyForNextLine}
                             ></Static>
                         )
+                    } else if (line instanceof InteractiveLine) {
+                        return (
+                            <Static
+                                key={`${line.content}-${i}`}
+                                content={line.content}
+                                lineCompleted={processInput}
+                                prompt
+                            ></Static>
+                        )
                     }
                     return ''
                 })}
                 {showInteractive ? (
-                    <Interactive onNext={processInput}></Interactive>
+                    <Interactive onNext={processUserInput}></Interactive>
                 ) : (
-                    'no interaction!!'
+                    ''
                 )}
             </Body>
         </Wrapper>

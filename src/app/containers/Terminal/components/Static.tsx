@@ -1,33 +1,24 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import { useEffect } from 'react'
+import { Prompt } from './Prompt'
+import { Text, LineStyle } from '../../../components/Terminal'
 
 type StaticProps = {
     content: any
-    lineCompleted?: () => void
+    prompt?: any
+    lineCompleted?: (content: string) => void
 }
 
-export class Static extends React.Component<StaticProps> {
-    componentDidMount() {
-        if (this.props.lineCompleted) this.props.lineCompleted()
-    }
+export function Static(props: StaticProps) {
+    useEffect(() => {
+        if (props.lineCompleted) props.lineCompleted(props.content)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-    render() {
-        return (
-            <LineStyle>
-                <Text>{this.props.content}</Text>
-            </LineStyle>
-        )
-    }
+    return (
+        <LineStyle>
+            {props.prompt ? <Prompt /> : ''}
+            <Text>{props.content}</Text>
+        </LineStyle>
+    )
 }
-
-const LineStyle = styled.p`
-    margin: 0;
-    ::selection {
-        color: black;
-        background: white;
-    }
-`
-const Text = styled.span`
-    margin: 0;
-    color: white;
-`

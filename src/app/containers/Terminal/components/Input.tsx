@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { Typewriter } from 'react-typewriting-effect'
-import { Interactive } from './Interactive'
-import { Text } from '../../../components/Terminal'
 import { Prompt } from './Prompt'
-import { LineStyle } from './LineStyle'
+import { Text, LineStyle } from '../../../components/Terminal'
 
 type InputProps = {
     content: any
@@ -11,8 +9,8 @@ type InputProps = {
 }
 
 export function Input(props: InputProps) {
-    const lineCompleted = (content: string) => {
-        if (props.lineCompleted) props.lineCompleted(content)
+    const lineCompleted = () => {
+        if (props.lineCompleted) props.lineCompleted(props.content)
     }
 
     return (
@@ -21,7 +19,7 @@ export function Input(props: InputProps) {
             <Text>
                 <Typewriter
                     string={props.content}
-                    onComplete={() => lineCompleted(props.content)}
+                    onComplete={lineCompleted}
                     cursor="█"
                     stopBlinkinOnComplete={true}
                 ></Typewriter>

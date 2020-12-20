@@ -5,7 +5,7 @@ export type Plottable = string | JSX.Element
 export type ParseResult = Plottable | boolean
 
 export interface Line {
-    content?: Plottable
+    content: Plottable
 }
 
 export class InputLine implements Line {
@@ -24,7 +24,13 @@ export class OutputLine implements Line {
     }
 }
 
-export class InteractiveLine implements Line {}
+export class InteractiveLine implements Line {
+    content: Plottable
+
+    constructor(content: Plottable) {
+        this.content = content
+    }
+}
 
 // State
 

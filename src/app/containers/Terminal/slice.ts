@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '../../../utils/@reduxjs/toolkit'
 import { StaticCommandProcessor } from './command'
-import { ContainerState, InputLine, OutputLine } from './types'
+import { ContainerState, InputLine, InteractiveLine, OutputLine } from './types'
 
 // The initial state of the Terminal container
 export const initialState: ContainerState = {
@@ -24,6 +24,9 @@ const terminalSlice = createSlice({
         showInteractive(state, action: PayloadAction<boolean>) {
             state.showInteractive = action.payload
         },
+        copyUserInput(state, action: PayloadAction<string>) {
+            state.lines.push(new InteractiveLine(action.payload))
+        },
         processCommand(state, action: PayloadAction<string>) {
             const command = action.payload
             const result = state.processor.process(command)
@@ -44,9 +47,6 @@ const terminalSlice = createSlice({
                     state.lines.push(new OutputLine(result))
                     break
             }
-        },
-        dequeueCommand(state) {
-            state.commandQueue.shift()
         },
         nextCommand(state) {
             if (state.commandQueue.length === 0) {

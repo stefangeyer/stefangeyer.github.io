@@ -21,7 +21,7 @@ import { App } from 'app'
 
 import { HelmetProvider } from 'react-helmet-async'
 
-import { configureAppStore } from 'store/configureStore'
+import { store } from 'store'
 
 import { ThemeProvider } from 'styles/theme/ThemeProvider'
 
@@ -37,7 +37,6 @@ openSansObserver.load().then(() => {
     document.body.classList.add('fontLoaded')
 })
 
-const store = configureAppStore()
 const MOUNT_NODE = document.getElementById('root') as HTMLElement
 
 ReactDOM.render(

@@ -1,9 +1,13 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { LineType, ParseResult, Plottable } from './types'
+import { Line, LineType, ParseResult, Plottable } from './types'
+import { store } from 'store'
+import { ThemeKeyType } from 'styles/theme/types'
+import { saveTheme } from 'styles/theme/utils'
+import { changeTheme } from 'styles/theme/slice'
 
 export class CommandHistory {
-    lines: [line: Plottable, type: LineType][]
+    lines: Line[]
 
     constructor() {
         this.lines = []
@@ -42,6 +46,16 @@ export class StaticCommandProcessor extends CommandProcessor {
                     <Executable>fetch_projects</Executable>
                 </span>
             )
+        } else if (label === 'theme') {
+            if (
+                args.length === 0 ||
+                !['system', 'light', 'dark'].includes(args[0])
+            )
+                return 'Usage: theme <system|light|dark>'
+            const value = args[0] as ThemeKeyType
+            saveTheme(value)
+            store.dispatch(changeTheme(value))
+            return `Theme changed to ${value}`
         }
         return false
     }

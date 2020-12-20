@@ -41,14 +41,14 @@ export function Terminal(props: TerminalProps) {
         if (result === true) {
             addOutput('')
         } else if (result === false) {
-            addOutput(input + ': command not found')
+            addOutput(input.split(' ').shift() + ': command not found')
         } else {
-            addOutput(input)
+            addOutput(result)
         }
     }
 
     async function outputCompleted() {
-        if (staticCursor < props.staticInput.length - 1) {
+        if (staticCursor < props.staticInput.length) {
             const next = props.staticInput[staticCursor]
             const delay = 200
             await new Promise(res => setTimeout(res, delay))
@@ -103,6 +103,7 @@ const Wrapper = styled.div`
     font-size: 14px;
     padding: 12px;
     transition: width 2s, height 2s;
+    word-break: break-all;
 `
 const Header = styled.div`
     display: flex;

@@ -6,7 +6,6 @@ import { Text } from '../../../components/Terminal'
 
 type InputProps = {
     content?: any
-    static?: any
     lineCompleted?: (content: string) => void
 }
 
@@ -28,7 +27,7 @@ export function Input(props: InputProps) {
                         string={props.content}
                         onComplete={() => lineCompleted(props.content)}
                         cursor="█"
-                        stopBlinkinOnComplete={props.static}
+                        stopBlinkinOnComplete={true}
                     ></Typewriter>
                 ) : (
                     <Interactive onComplete={lineCompleted}></Interactive>

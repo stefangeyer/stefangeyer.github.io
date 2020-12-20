@@ -3,25 +3,57 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { Static } from './components/Static'
 import { Input } from './components/Input'
-import { LineType } from './types'
+import { CommandHistory, CommandProcessor } from './command'
+import { Line, LineType, Plottable } from './types'
 
 type TerminalProps = {
-    lines: [content: any, type: LineType][]
+    staticInput: string[]
+    processor: CommandProcessor
+    history: CommandHistory
 }
 
 export function Terminal(props: TerminalProps) {
-    const [lines, setLines] = useState<[content: any, type: LineType][]>([
-        [...props.lines[0]],
+    const [staticCursor, setStaticCursor] = useState<number>(1)
+
+    const [lines, setLines] = useState<Line[]>([
+        [props.staticInput[0], LineType.INPUT],
     ])
 
-    async function lineCompleted() {
-        if (lines.length < props.lines.length) {
-            const next = props.lines[lines.length]
+    function addLine(line: Plottable, type: LineType) {
+        setLines([...lines, [line, type]])
+    }
+
+    function addInput(line: Plottable) {
+        addLine(line, LineType.INPUT)
+    }
+
+    function addOutput(line: Plottable) {
+        addLine(line, LineType.OUTPUT)
+    }
+
+    function humanInputCompleted(input: string) {
+        addInput(input)
+        inputCompleted(input)
+    }
+
+    async function inputCompleted(input: string) {
+        const result = await props.processor.process(input)
+        if (result === true) {
+            addOutput('')
+        } else if (result === false) {
+            addOutput(input + ': command not found')
+        } else {
+            addOutput(input)
+        }
+    }
+
+    async function outputCompleted() {
+        if (staticCursor < props.staticInput.length - 1) {
+            const next = props.staticInput[staticCursor]
             const delay = 200
             await new Promise(res => setTimeout(res, delay))
-            const newLines = [...lines]
-            newLines.push(next)
-            setLines(newLines)
+            addInput(next)
+            setStaticCursor(staticCursor + 1)
         }
     }
 
@@ -40,20 +72,21 @@ export function Terminal(props: TerminalProps) {
                         <Input
                             key={`${line[0]}-${i}`}
                             content={line[0]}
-                            lineCompleted={lineCompleted}
-                            static={
-                                i !== props.lines.length - 1 ? true : undefined
-                            }
+                            lineCompleted={inputCompleted}
                         ></Input>
                     ) : (
                         <Static
                             key={`${line[0]}-${i}`}
                             content={line[0]}
-                            lineCompleted={lineCompleted}
+                            lineCompleted={outputCompleted}
                         ></Static>
                     ),
                 )}
-                <Input lineCompleted={lineCompleted}></Input>
+                {lines[lines.length - 1][1] === LineType.OUTPUT ? (
+                    <Input lineCompleted={humanInputCompleted}></Input>
+                ) : (
+                    ''
+                )}
             </Body>
         </Wrapper>
     )

@@ -1,11 +1,12 @@
 import * as React from 'react'
-import styled from 'styled-components'
 import { Typewriter } from 'react-typewriting-effect'
 import { Interactive } from './Interactive'
 import { Text } from '../../../components/Terminal'
+import { Prompt } from './Prompt'
+import { LineStyle } from './LineStyle'
 
 type InputProps = {
-    content?: any
+    content: any
     lineCompleted?: (content: string) => void
 }
 
@@ -16,42 +17,15 @@ export function Input(props: InputProps) {
 
     return (
         <LineStyle>
-            <Prompt>
-                <span>stefan@web</span>
-                <span>~</span>
-                <span>$</span>{' '}
-            </Prompt>
+            <Prompt />
             <Text>
-                {props.content ? (
-                    <Typewriter
-                        string={props.content}
-                        onComplete={() => lineCompleted(props.content)}
-                        cursor="█"
-                        stopBlinkinOnComplete={true}
-                    ></Typewriter>
-                ) : (
-                    <Interactive onComplete={lineCompleted}></Interactive>
-                )}
+                <Typewriter
+                    string={props.content}
+                    onComplete={() => lineCompleted(props.content)}
+                    cursor="█"
+                    stopBlinkinOnComplete={true}
+                ></Typewriter>
             </Text>
         </LineStyle>
     )
 }
-
-const LineStyle = styled.p`
-    margin: 0;
-    ::selection {
-        color: black;
-        background: white;
-    }
-`
-const Prompt = styled.span`
-    margin: 0;
-    color: white;
-
-    span:nth-child(1) {
-        color: #00f100;
-    }
-    span:nth-child(2) {
-        color: #00a4f1;
-    }
-`

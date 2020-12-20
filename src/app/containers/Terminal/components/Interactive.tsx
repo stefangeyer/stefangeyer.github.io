@@ -2,14 +2,16 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { useState } from 'react'
 import { Text } from '../../../components/Terminal'
+import { Prompt } from './Prompt'
+import { LineStyle } from './LineStyle'
 
 type InteractiveProps = {
-    onComplete: (content: string) => void
+    onNext: (content: string) => void
 }
 
 export function Interactive(props: InteractiveProps) {
     const [content, setContent] = useState('')
-    const [editing, setEditing] = useState(true)
+    const inputRef = React.createRef<HTMLInputElement>()
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setContent(event.target.value)
@@ -17,22 +19,26 @@ export function Interactive(props: InteractiveProps) {
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            setEditing(false)
-            props.onComplete(content)
+            props.onNext(content)
+            if (inputRef.current) {
+                inputRef.current.value = ''
+            }
         }
     }
 
-    if (editing) {
-        return (
-            <InteractiveInput
-                spellCheck={false}
-                onChange={handleChange}
-                onKeyUp={handleKeyUp}
-            ></InteractiveInput>
-        )
-    } else {
-        return <Text>{content}</Text>
-    }
+    return (
+        <LineStyle>
+            <Prompt />
+            <Text>
+                <InteractiveInput
+                    ref={inputRef}
+                    spellCheck={false}
+                    onChange={handleChange}
+                    onKeyUp={handleKeyUp}
+                ></InteractiveInput>
+            </Text>
+        </LineStyle>
+    )
 }
 
 const InteractiveInput = styled.input`

@@ -9,6 +9,7 @@ import { InputLine, Line, OutputLine } from './types'
 import { sliceKey, reducer, actions } from './slice'
 import { terminalSaga } from './saga'
 import { selectHistory, selectShowInteractive } from './selectors'
+import { Interactive } from './components/Interactive'
 
 type TerminalProps = {}
 
@@ -64,9 +65,9 @@ export function Terminal(props: TerminalProps) {
                     return ''
                 })}
                 {showInteractive ? (
-                    <Input lineCompleted={processInput}></Input>
+                    <Interactive onNext={processInput}></Interactive>
                 ) : (
-                    ''
+                    'no interaction!!'
                 )}
             </Body>
         </Wrapper>

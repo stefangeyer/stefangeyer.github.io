@@ -1,15 +1,17 @@
 import * as React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors'
 import { Static } from './components/Static'
 import { Input } from './components/Input'
-import { InputLine, InteractiveLine, Line, OutputLine } from './types'
+import { Line, LineType } from './types'
 import { sliceKey, reducer, actions } from './slice'
 import { terminalSaga } from './saga'
 import { selectHistory, selectShowInteractive } from './selectors'
 import { Interactive } from './components/Interactive'
+import SimpleBar from 'simplebar-react'
+import 'simplebar/dist/simplebar.min.css'
 
 type TerminalProps = {}
 
@@ -21,6 +23,8 @@ export function Terminal(props: TerminalProps) {
     const showInteractive = useSelector(selectShowInteractive)
     const dispatch = useDispatch()
 
+    const bottomRef = useRef<HTMLDivElement>(null)
+
     // This hook runs only on mount and is used to ensure the initial command is dispatched
     useEffect(() => {
         dispatch(actions.nextCommand())
@@ -29,14 +33,23 @@ export function Terminal(props: TerminalProps) {
 
     function processUserInput(input: string) {
         dispatch(actions.copyUserInput(input))
+        //scrollToBottom()
     }
 
     function processInput(input: string) {
         dispatch(actions.processCommand(input))
+        //scrollToBottom()
     }
 
     function readyForNextLine() {
         dispatch(actions.nextCommand())
+        //scrollToBottom()
+    }
+
+    function scrollToBottom() {
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+        }
     }
 
     return (
@@ -48,9 +61,9 @@ export function Terminal(props: TerminalProps) {
                     <Icon color={'#27c93f'}></Icon>
                 </IconGroup>
             </Header>
-            <Body>
+            <Body autoHide={false}>
                 {history.map((line: Line, i) => {
-                    if (line instanceof InputLine) {
+                    if (line.type === LineType.INPUT) {
                         return (
                             <Input
                                 key={`${line.content}-${i}`}
@@ -58,7 +71,7 @@ export function Terminal(props: TerminalProps) {
                                 lineCompleted={processInput}
                             ></Input>
                         )
-                    } else if (line instanceof OutputLine) {
+                    } else if (line.type === LineType.OUTPUT) {
                         return (
                             <Static
                                 key={`${line.content}-${i}`}
@@ -66,7 +79,7 @@ export function Terminal(props: TerminalProps) {
                                 lineCompleted={readyForNextLine}
                             ></Static>
                         )
-                    } else if (line instanceof InteractiveLine) {
+                    } else if (line.type === LineType.INTERACTIVE) {
                         return (
                             <Static
                                 key={`${line.content}-${i}`}
@@ -83,6 +96,7 @@ export function Terminal(props: TerminalProps) {
                 ) : (
                     ''
                 )}
+                <div ref={bottomRef}></div>
             </Body>
         </Wrapper>
     )
@@ -91,7 +105,6 @@ export function Terminal(props: TerminalProps) {
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    //width: 800px;
     height: 500px;
     background-color: rgb(40, 44, 52);
     border-radius: 5px;
@@ -100,16 +113,22 @@ const Wrapper = styled.div`
     padding: 12px;
     transition: width 2s, height 2s;
     word-break: break-all;
+    cursor: text;
 `
 const Header = styled.div`
     display: flex;
     justify-content: start;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
 `
-const Body = styled.div`
+const Body = styled(SimpleBar)`
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+
+    ::selection {
+        color: black;
+        background: white;
+    }
 `
 const IconGroup = styled.div`
     display: flex;

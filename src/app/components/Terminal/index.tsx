@@ -7,8 +7,4 @@ export const Text = styled.span`
 
 export const LineStyle = styled.p`
     margin: 0;
-    ::selection {
-        color: black;
-        background: white;
-    }
 `

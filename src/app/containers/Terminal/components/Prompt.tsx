@@ -6,13 +6,14 @@ export function Prompt() {
         <Wrapper>
             <span>stefan@web</span>
             <span>~</span>
-            <span>$</span>{' '}
+            <span>$</span>
         </Wrapper>
     )
 }
 
 const Wrapper = styled.span`
     margin: 0;
+    padding-right: 0.5em;
     color: white;
 
     span:nth-child(1) {

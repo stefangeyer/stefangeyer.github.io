@@ -11,11 +11,6 @@ export const selectHistory = createSelector(
     terminal => terminal.lines,
 )
 
-export const selectProcessor = createSelector(
-    [selectDomain],
-    terminal => terminal.processor,
-)
-
 export const selectShowInteractive = createSelector(
     [selectDomain],
     terminal => terminal.showInteractive,

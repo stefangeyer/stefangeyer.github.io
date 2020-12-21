@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '../../../utils/@reduxjs/toolkit'
 import { StaticCommandProcessor } from './command'
-import { ContainerState, InputLine, InteractiveLine, OutputLine } from './types'
+import { ContainerState, LineType } from './types'
 
 // The initial state of the Terminal container
 export const initialState: ContainerState = {
@@ -14,8 +14,9 @@ export const initialState: ContainerState = {
     ],
     showInteractive: false,
     lines: [],
-    processor: new StaticCommandProcessor(),
 }
+
+const processor = new StaticCommandProcessor()
 
 const terminalSlice = createSlice({
     name: 'terminal',
@@ -25,26 +26,30 @@ const terminalSlice = createSlice({
             state.showInteractive = action.payload
         },
         copyUserInput(state, action: PayloadAction<string>) {
-            state.lines.push(new InteractiveLine(action.payload))
+            state.lines.push({
+                content: action.payload,
+                type: LineType.INTERACTIVE,
+            })
         },
         processCommand(state, action: PayloadAction<string>) {
             const command = action.payload
-            const result = state.processor.process(command)
+            const result = processor.process(command)
             switch (result) {
                 case true:
                     // true => no new line
                     break
                 case false:
                     // false => command was not handled
-                    state.lines.push(
-                        new OutputLine(
-                            command.split(' ').shift() + ': command not found',
-                        ),
-                    )
+                    state.lines.push({
+                        content: `${command
+                            .split(' ')
+                            .shift()}: command not found`,
+                        type: LineType.OUTPUT,
+                    })
                     break
                 default:
-                    // else => command was parsed successfully
-                    state.lines.push(new OutputLine(result))
+                    // else => command was processed successfully
+                    state.lines.push({ content: result, type: LineType.OUTPUT })
                     break
             }
         },
@@ -54,7 +59,10 @@ const terminalSlice = createSlice({
                 return
             }
             const nextCommand = state.commandQueue.shift() || 'ERROR'
-            state.lines = [...state.lines, new InputLine(nextCommand)]
+            state.lines = [
+                ...state.lines,
+                { content: nextCommand, type: LineType.INPUT },
+            ]
             state.showInteractive = false
         },
     },

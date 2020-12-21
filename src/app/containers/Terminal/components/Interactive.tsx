@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useRef } from 'react'
 import styled from 'styled-components'
 import { Text, LineStyle } from '../../../components/Terminal'
 import { Prompt } from './Prompt'
@@ -8,9 +9,9 @@ type InteractiveProps = {
 }
 
 export function Interactive(props: InteractiveProps) {
-    const inputRef = React.createRef<HTMLInputElement>()
+    const inputRef = useRef<HTMLInputElement>(null)
 
-    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             if (inputRef.current) {
                 props.onNext(inputRef.current.value)
@@ -20,18 +21,26 @@ export function Interactive(props: InteractiveProps) {
     }
 
     return (
-        <LineStyle>
+        <InteractiveLineStyle>
             <Prompt />
-            <Text>
+            <InteractiveText>
                 <InteractiveInput
                     ref={inputRef}
                     spellCheck={false}
-                    onKeyUp={handleKeyUp}
+                    onKeyDown={handleKeyDown}
                 ></InteractiveInput>
-            </Text>
-        </LineStyle>
+            </InteractiveText>
+        </InteractiveLineStyle>
     )
 }
+
+const InteractiveLineStyle = styled(LineStyle)`
+    display: flex;
+`
+
+const InteractiveText = styled(Text)`
+    flex: 1;
+`
 
 const InteractiveInput = styled.input`
     background: transparent;
@@ -40,4 +49,5 @@ const InteractiveInput = styled.input`
     caret-color: white;
     color: white;
     padding: 0;
+    width: 100%;
 `

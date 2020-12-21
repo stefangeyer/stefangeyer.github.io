@@ -17,7 +17,9 @@ export abstract class CommandProcessor {
 
 export class StaticCommandProcessor extends CommandProcessor {
     onCommand(label: string, args: string[]): ParseResult {
-        if (label.startsWith('./')) {
+        if (label.startsWith('#')) {
+            return true
+        } else if (label.startsWith('./')) {
             return './ not implemented yet :('
         } else if (label === 'ls') {
             return (
@@ -27,6 +29,8 @@ export class StaticCommandProcessor extends CommandProcessor {
                     <Executable>fetch_projects</Executable>
                 </span>
             )
+        } else if (label === 'pwd') {
+            return '/home/stefan'
         } else if (label === 'theme') {
             if (
                 args.length === 0 ||

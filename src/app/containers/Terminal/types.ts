@@ -4,39 +4,21 @@ export type Plottable = string | JSX.Element
 
 export type ParseResult = Plottable | boolean
 
+export enum LineType {
+    INPUT,
+    OUTPUT,
+    INTERACTIVE,
+}
+
 export interface Line {
     content: Plottable
-}
-
-export class InputLine implements Line {
-    content: Plottable
-
-    constructor(content: Plottable) {
-        this.content = content
-    }
-}
-
-export class OutputLine implements Line {
-    content: Plottable
-
-    constructor(content: Plottable) {
-        this.content = content
-    }
-}
-
-export class InteractiveLine implements Line {
-    content: Plottable
-
-    constructor(content: Plottable) {
-        this.content = content
-    }
+    type: LineType
 }
 
 // State
 
 export interface TerminalState {
     commandQueue: string[]
-    processor: CommandProcessor
     lines: Line[]
     showInteractive: boolean
 }

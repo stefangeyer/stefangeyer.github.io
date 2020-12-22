@@ -5,13 +5,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors'
 import { Static } from './components/Static'
 import { Input } from './components/Input'
-import { Line, LineType } from './types'
+import { FileList } from './components/File'
+import {
+    FileData,
+    isCompositeResult,
+    Line,
+    LineType,
+    ResultType,
+} from './types'
 import { sliceKey, reducer, actions } from './slice'
 import { terminalSaga } from './saga'
 import { selectHistory, selectShowInteractive } from './selectors'
 import { Interactive } from './components/Interactive'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
+import { ThemeSwitch } from './components/ThemeSwitch'
+import { ThemeKeyType } from 'styles/theme/types'
 
 type TerminalProps = {}
 
@@ -72,13 +81,47 @@ export function Terminal(props: TerminalProps) {
                             ></Input>
                         )
                     } else if (line.type === LineType.OUTPUT) {
-                        return (
-                            <Static
-                                key={`${line.content}-${i}`}
-                                content={line.content}
-                                lineCompleted={readyForNextLine}
-                            ></Static>
-                        )
+                        if (typeof line.content === 'string') {
+                            return (
+                                <Static
+                                    key={`${line.content}-${i}`}
+                                    content={line.content}
+                                    lineCompleted={readyForNextLine}
+                                ></Static>
+                            )
+                        } else if (isCompositeResult(line.content)) {
+                            if (line.content.type === ResultType.LS) {
+                                return (
+                                    <Static
+                                        key={`${line.content.type}-${i}`}
+                                        content={
+                                            <FileList
+                                                files={
+                                                    line.content
+                                                        .payload as FileData[]
+                                                }
+                                            />
+                                        }
+                                        lineCompleted={readyForNextLine}
+                                    ></Static>
+                                )
+                            } else if (line.content.type === ResultType.THEME) {
+                                return (
+                                    <Static
+                                        key={`${line.content.type}-${i}`}
+                                        content={
+                                            <ThemeSwitch
+                                                value={
+                                                    line.content
+                                                        .payload as ThemeKeyType
+                                                }
+                                            />
+                                        }
+                                        lineCompleted={readyForNextLine}
+                                    ></Static>
+                                )
+                            }
+                        }
                     } else if (line.type === LineType.INTERACTIVE) {
                         return (
                             <Static

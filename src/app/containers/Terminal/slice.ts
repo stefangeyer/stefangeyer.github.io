@@ -1,6 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '../../../utils/@reduxjs/toolkit'
 import { StaticCommandProcessor } from './command'
+import { MockedFileSystem } from './fs'
 import { ContainerState, LineType } from './types'
 
 // The initial state of the Terminal container
@@ -16,7 +17,7 @@ export const initialState: ContainerState = {
     lines: [],
 }
 
-const processor = new StaticCommandProcessor()
+const processor = new StaticCommandProcessor(new MockedFileSystem())
 
 const terminalSlice = createSlice({
     name: 'terminal',

@@ -1,8 +1,6 @@
-import * as React from 'react'
-import { ParseResult } from './types'
-import { Default, Executable } from './components/File'
+import { FileData, ParseResult, ResultType } from './types'
+import { FileSystem } from './fs'
 import { ThemeKeyType } from 'styles/theme/types'
-import { ThemeSwitch } from './components/ThemeSwitch'
 
 export abstract class CommandProcessor {
     process(command: string): ParseResult {
@@ -16,19 +14,21 @@ export abstract class CommandProcessor {
 }
 
 export class StaticCommandProcessor extends CommandProcessor {
+    fileSystem: FileSystem
+
+    constructor(fileSystem: FileSystem) {
+        super()
+        this.fileSystem = fileSystem
+    }
+
     onCommand(label: string, args: string[]): ParseResult {
         if (label.startsWith('#')) {
             return true
         } else if (label.startsWith('./')) {
             return './ not implemented yet :('
         } else if (label === 'ls') {
-            return (
-                <span>
-                    <Default>education.txt</Default>{' '}
-                    <Default>experience.txt</Default>{' '}
-                    <Executable>fetch_projects</Executable>
-                </span>
-            )
+            const files: FileData[] = this.fileSystem.listDirectory()
+            return { type: ResultType.LS, payload: files }
         } else if (label === 'pwd') {
             return '/home/stefan'
         } else if (label === 'theme') {
@@ -38,7 +38,7 @@ export class StaticCommandProcessor extends CommandProcessor {
             )
                 return 'Usage: theme <system|light|dark>'
             const value = args[0] as ThemeKeyType
-            return <ThemeSwitch value={value}></ThemeSwitch>
+            return { type: ResultType.THEME, payload: value }
         }
         return false
     }

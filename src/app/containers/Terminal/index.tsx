@@ -1,11 +1,15 @@
 import * as React from 'react'
-import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors'
 import { Static } from './components/Static'
 import { Input } from './components/Input'
 import { FileList } from './components/File'
+import { Contact } from './components/Contact'
+import { Education } from './components/Education'
+import { Experience } from './components/Experience'
+import { Projects } from './components/Projects'
 import {
     FileData,
     isCompositeResult,
@@ -21,6 +25,7 @@ import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 import { ThemeSwitch } from './components/ThemeSwitch'
 import { ThemeKeyType } from 'styles/theme/types'
+import { LanguageSwitch } from './components/LanguageSwitch'
 
 type TerminalProps = {}
 
@@ -78,6 +83,15 @@ export function Terminal(props: TerminalProps) {
                                 lineCompleted={processInput}
                             ></Input>
                         )
+                    } else if (line.type === LineType.INTERACTIVE) {
+                        return (
+                            <Static
+                                key={`${line.content}-${i}`}
+                                content={line.content}
+                                lineCompleted={processInput}
+                                prompt
+                            ></Static>
+                        )
                     } else if (line.type === LineType.OUTPUT) {
                         if (typeof line.content === 'string') {
                             return (
@@ -88,47 +102,60 @@ export function Terminal(props: TerminalProps) {
                                 ></Static>
                             )
                         } else if (isCompositeResult(line.content)) {
+                            let content: any = ''
                             if (line.content.type === ResultType.LS) {
-                                return (
-                                    <Static
-                                        key={`${line.content.type}-${i}`}
-                                        content={
-                                            <FileList
-                                                files={
-                                                    line.content
-                                                        .payload as FileData[]
-                                                }
-                                            />
+                                content = (
+                                    <FileList
+                                        files={
+                                            line.content.payload as FileData[]
                                         }
-                                        lineCompleted={readyForNextLine}
-                                    ></Static>
+                                    />
                                 )
+                            } else if (line.content.type === ResultType.CAT) {
+                                const payload = line.content.payload as FileData
+                                switch (payload.name) {
+                                    case 'contact.txt':
+                                        content = <Contact></Contact>
+                                        break
+                                    case 'education.txt':
+                                        content = <Education></Education>
+                                        break
+                                    case 'experience.txt':
+                                        content = <Experience></Experience>
+                                        break
+                                }
+                            } else if (
+                                line.content.type === ResultType.EXECUTE
+                            ) {
+                                const payload = line.content.payload as FileData
+                                switch (payload.name) {
+                                    case 'fetch_projects':
+                                        content = <Projects></Projects>
+                                        break
+                                }
                             } else if (line.content.type === ResultType.THEME) {
-                                return (
-                                    <Static
-                                        key={`${line.content.type}-${i}`}
-                                        content={
-                                            <ThemeSwitch
-                                                value={
-                                                    line.content
-                                                        .payload as ThemeKeyType
-                                                }
-                                            />
+                                content = (
+                                    <ThemeSwitch
+                                        value={
+                                            line.content.payload as ThemeKeyType
                                         }
-                                        lineCompleted={readyForNextLine}
-                                    ></Static>
+                                    />
+                                )
+                            } else if (line.content.type === ResultType.LANG) {
+                                content = (
+                                    <LanguageSwitch
+                                        value={line.content.payload as string}
+                                    ></LanguageSwitch>
                                 )
                             }
+                            return (
+                                <Static
+                                    key={`${line.content.type}-${i}`}
+                                    content={content}
+                                    lineCompleted={readyForNextLine}
+                                ></Static>
+                            )
                         }
-                    } else if (line.type === LineType.INTERACTIVE) {
-                        return (
-                            <Static
-                                key={`${line.content}-${i}`}
-                                content={line.content}
-                                lineCompleted={processInput}
-                                prompt
-                            ></Static>
-                        )
                     }
                     return ''
                 })}
@@ -155,7 +182,7 @@ const Wrapper = styled.div`
     padding: 12px;
     transition: width 1s, height 1s;
     word-break: break-all;
-    cursor: text;
+    user-select: none;
 
     @media (min-width: 768px) {
         width: 80%;
@@ -171,11 +198,6 @@ const Body = styled(SimpleBar)`
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-
-    &::selection {
-        color: black;
-        background: white;
-    }
 `
 const IconGroup = styled.div`
     display: flex;

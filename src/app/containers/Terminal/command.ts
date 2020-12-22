@@ -23,14 +23,25 @@ export class StaticCommandProcessor extends CommandProcessor {
 
     onCommand(label: string, args: string[]): ParseResult {
         if (label.startsWith('#')) {
+            // Comment
             return true
         } else if (label.startsWith('./')) {
-            return './ not implemented yet :('
+            const path = label.replace(/\.\//g, '')
+            const file = this.fileSystem.accessFile(path)
+            if (file == null) return `${label}: No such file or directory`
+            if (!file.executable) return `${label}: File is not executable`
+            return { type: ResultType.EXECUTE, payload: file }
         } else if (label === 'ls') {
+            if (args.length > 0) return 'ls does not support arguments yet'
             const files: FileData[] = this.fileSystem.listDirectory()
             return { type: ResultType.LS, payload: files }
         } else if (label === 'pwd') {
-            return '/home/stefan'
+            return this.fileSystem.workingDirectory
+        } else if (label === 'cat') {
+            if (args.length === 0) return 'Usage: cat <file>'
+            const file = this.fileSystem.accessFile(args[0])
+            if (file == null) return `${label}: No such file or directory`
+            return { type: ResultType.CAT, payload: file }
         } else if (label === 'theme') {
             if (
                 args.length === 0 ||
@@ -39,6 +50,10 @@ export class StaticCommandProcessor extends CommandProcessor {
                 return 'Usage: theme <system|light|dark>'
             const value = args[0] as ThemeKeyType
             return { type: ResultType.THEME, payload: value }
+        } else if (label === 'lang') {
+            if (args.length === 0 || !['en', 'de'].includes(args[0]))
+                return 'Usage: lang <en|de>'
+            return { type: ResultType.LANG, payload: args[0] as string }
         }
         return false
     }

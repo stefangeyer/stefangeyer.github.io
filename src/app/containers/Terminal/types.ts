@@ -6,6 +6,9 @@ export type ParseResult = Plottable | boolean
 export enum ResultType {
     LS,
     THEME,
+    LANG,
+    CAT,
+    EXECUTE,
 }
 
 export type CompositeResult = {

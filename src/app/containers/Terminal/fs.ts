@@ -9,13 +9,14 @@ export interface FileSystem {
 export class MockedFileSystem implements FileSystem {
     workingDirectory: string = '/home/stefan'
     files: FileData[] = [
+        { name: 'contact.txt', executable: false },
         { name: 'education.txt', executable: false },
         { name: 'experience.txt', executable: false },
         { name: 'fetch_projects', executable: true },
     ]
 
     listDirectory(path?: string): FileData[] {
-        return this.files
+        return this.files.sort((a, b) => a.name.localeCompare(b.name))
     }
 
     changeDirectory(path?: string): boolean {

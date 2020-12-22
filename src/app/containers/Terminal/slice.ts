@@ -11,7 +11,7 @@ export const initialState: ContainerState = {
         'cat education.txt',
         'cat experience.txt',
         './fetch_projects',
-        'curl https://api.stefangeyer.at/v1/contact',
+        'cat contact.txt',
     ],
     showInteractive: false,
     lines: [],

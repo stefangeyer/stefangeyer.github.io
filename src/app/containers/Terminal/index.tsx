@@ -42,17 +42,15 @@ export function Terminal(props: TerminalProps) {
 
     function processUserInput(input: string) {
         dispatch(actions.copyUserInput(input))
-        //scrollToBottom()
+        scrollToBottom()
     }
 
     function processInput(input: string) {
         dispatch(actions.processCommand(input))
-        //scrollToBottom()
     }
 
     function readyForNextLine() {
         dispatch(actions.nextCommand())
-        //scrollToBottom()
     }
 
     function scrollToBottom() {
@@ -148,15 +146,20 @@ export function Terminal(props: TerminalProps) {
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
     height: 500px;
     background-color: rgb(40, 44, 52);
     border-radius: 5px;
     font-family: Consolas, monaco, monospace;
     font-size: 14px;
     padding: 12px;
-    transition: width 2s, height 2s;
+    transition: width 1s, height 1s;
     word-break: break-all;
     cursor: text;
+
+    @media (min-width: 768px) {
+        width: 80%;
+    }
 `
 const Header = styled.div`
     display: flex;
@@ -166,9 +169,10 @@ const Header = styled.div`
 const Body = styled(SimpleBar)`
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
     overflow-y: auto;
 
-    ::selection {
+    &::selection {
         color: black;
         background: white;
     }

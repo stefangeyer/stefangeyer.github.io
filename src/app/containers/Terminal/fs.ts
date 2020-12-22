@@ -16,7 +16,7 @@ export class MockedFileSystem implements FileSystem {
     ]
 
     listDirectory(path?: string): FileData[] {
-        return this.files.sort((a, b) => a.name.localeCompare(b.name))
+        return this.files
     }
 
     changeDirectory(path?: string): boolean {

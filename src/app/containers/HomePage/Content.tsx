@@ -12,7 +12,7 @@ export function Content() {
 
 const Wrapper = styled.main`
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     margin-top: 3em;
     margin-bottom: 1em;
 `

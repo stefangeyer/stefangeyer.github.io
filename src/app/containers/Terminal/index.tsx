@@ -172,9 +172,9 @@ export function Terminal(props: TerminalProps) {
 
 const Wrapper = styled.div`
     display: flex;
+    flex: 0.9;
     flex-direction: column;
-    width: 100%;
-    height: 500px;
+    height: 80vh;
     background-color: rgb(40, 44, 52);
     border-radius: 5px;
     font-family: Consolas, monaco, monospace;

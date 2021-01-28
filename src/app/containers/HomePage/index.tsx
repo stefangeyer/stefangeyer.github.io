@@ -8,7 +8,7 @@ export function HomePage() {
     return (
         <>
             <Helmet>
-                <title>Hello, it's me, Stefan</title>
+                <title>Stefan Geyer</title>
                 <meta
                     name="description"
                     content="The one and only Stefan Geyer website"

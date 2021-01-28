@@ -38,6 +38,7 @@ export function Terminal(props: TerminalProps) {
     const dispatch = useDispatch()
 
     const bottomRef = useRef<HTMLDivElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null)
 
     // This hook runs only on mount and is used to ensure the initial command is dispatched
     useEffect(() => {
@@ -58,6 +59,17 @@ export function Terminal(props: TerminalProps) {
         dispatch(actions.nextCommand())
     }
 
+    function handleTerminalClick() {
+        scrollToBottom()
+        focusInput()
+    }
+
+    function focusInput() {
+        if (inputRef.current) {
+            inputRef.current.focus()
+        }
+    }
+
     function scrollToBottom() {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -65,7 +77,7 @@ export function Terminal(props: TerminalProps) {
     }
 
     return (
-        <Wrapper>
+        <Wrapper onClick={handleTerminalClick}>
             <Header>
                 <IconGroup>
                     <Icon color={'#ff5f56'}></Icon>
@@ -160,7 +172,10 @@ export function Terminal(props: TerminalProps) {
                     return ''
                 })}
                 {showInteractive ? (
-                    <Interactive onNext={processUserInput}></Interactive>
+                    <Interactive
+                        inputRef={inputRef}
+                        onNext={processUserInput}
+                    ></Interactive>
                 ) : (
                     ''
                 )}
@@ -182,7 +197,6 @@ const Wrapper = styled.div`
     padding: 12px;
     transition: width 1s, height 1s;
     word-break: break-all;
-    user-select: none;
 
     @media (min-width: 768px) {
         width: 80%;
